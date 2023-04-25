@@ -18,6 +18,17 @@ jobs:
         with:
           report_format: sarif
           fail: false
-      - name: Scan repository with GitLeaks
+      - name: Get the output from the gitleaks step
         run: |
-          ./gitleaks --verbose --redact
+          echo "exitcode: ${{ steps.gitleaks.outputs.exitcode }}"
+          echo "result: ${{ steps.gitleaks.outputs.result }}"
+          echo "output: ${{ steps.gitleaks.outputs.output }}"
+          echo "command: ${{ steps.gitleaks.outputs.command }}"
+          echo "report: ${{ steps.gitleaks.outputs.report }}"
+
+      - name: Upload Gitleaks SARIF report to code scanning service
+        if: ${{ steps.gitleaks.outputs.exitcode == 1 }}
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ steps.gitleaks.outputs.report }}
+      
