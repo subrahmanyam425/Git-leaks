@@ -1,0 +1,20 @@
+name: GitLeaks Scan
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+jobs:
+  gitleaks:
+    name: GitLeaks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install GitLeaks
+        run: |
+          curl -L https://github.com/zricethezav/gitleaks/releases/download/v7.5.0/gitleaks-linux-amd64 -o gitleaks
+          chmod +x gitleaks
+      - name: Scan repository with GitLeaks
+        run: |
+          ./gitleaks --verbose --redact
