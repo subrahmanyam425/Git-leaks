@@ -12,10 +12,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         
-      - name: Install GitLeaks
-        run: |
-          curl -L https://github.com/zricethezav/gitleaks/releases/download/v7.5.0/gitleaks-linux-amd64 -o gitleaks
-          chmod +x gitleaks
+      - name: Run Gitleaks
+        id: gitleaks
+        uses: DariuszPorowski/github-action-gitleaks@v2
+        with:
+          report_format: sarif
+          fail: false
       - name: Scan repository with GitLeaks
         run: |
           ./gitleaks --verbose --redact
