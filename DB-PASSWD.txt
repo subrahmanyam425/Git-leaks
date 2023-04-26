@@ -1,0 +1,4 @@
+username=avinash-NE
+gmail=avinash123@gmail.com
+db_password="Avinash@123"
+phonenumber=9123456765432
