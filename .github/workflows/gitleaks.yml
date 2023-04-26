@@ -1,36 +1,19 @@
-name: GitLeaks Scan
+name: "Gitleaks Scan"
 on:
   push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+    branches:
+      - main
 jobs:
-  gitleaks:
+  gitleaks-scan:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-
-    - name: Run Gitleaks
-      id: gitleaks
-      uses: DariuszPorowski/github-action-gitleaks@v2
-      with:
-        report_format: sarif
-
-  # (optional) It's just to see outputs from the Action
-    - name: Get the output from the gitleaks step
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Install gitleaks
       run: |
-        echo "exitcode: ${{ steps.gitleaks.outputs.exitcode }}"
-        echo "result: ${{ steps.gitleaks.outputs.result }}"
-        echo "output: ${{ steps.gitleaks.outputs.output }}"
-        echo "command: ${{ steps.gitleaks.outputs.command }}"
-        echo "report: ${{ steps.gitleaks.outputs.report }}"
-
-    - name: Upload Gitleaks SARIF report to code scanning service
-      if: ${{ steps.gitleaks.outputs.exitcode == 1 }}
-      uses: github/codeql-action/upload-sarif@v2
-      with:
-        sarif_file: ${{ steps.gitleaks.outputs.report }}
-        
+        wget https://github.com/zricethezav/gitleaks/releases/download/v7.2.0/gitleaks-linux-amd64
+        chmod +x gitleaks-linux-amd64
+        sudo mv gitleaks-linux-amd64 /usr/local/bin/gitleaks
+    - name: Scan for secrets
+      run: |
+        gitleaks --verbose --redact --config=gitleaks.toml
