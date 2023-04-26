@@ -6,7 +6,7 @@ on:
     branches: [ main, master ]
 jobs:
   gitleaks:
-    runs-on: DariuszPorowski/github-action-gitleaks@v2
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v3
