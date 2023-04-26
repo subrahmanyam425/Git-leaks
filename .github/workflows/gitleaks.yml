@@ -18,4 +18,4 @@ jobs:
         sudo mv gitleaks-linux-amd64 /usr/local/bin/gitleaks
     - name: Scan for secrets
       run: |
-        gitleaks --verbose --redact --config=gitleaks.toml
+        gitleaks --verbose --redact
