@@ -6,8 +6,7 @@ on:
     branches: [ main, master ]
 jobs:
   gitleaks:
-    name: GitLeaks
-    runs-on: ubuntu-latest
+    runs-on: DariuszPorowski/github-action-gitleaks@v2
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -15,11 +14,13 @@ jobs:
         fetch-depth: 0
 
     - name: Run Gitleaks
-      #id: gitleaks
+      id: gitleaks
       uses: DariuszPorowski/github-action-gitleaks@v2
+      with:
+        report_format: sarif
+        fail: false
 
-
-    # (optional) It's just to see outputs from the Action
+  # (optional) It's just to see outputs from the Action
     - name: Get the output from the gitleaks step
       run: |
         echo "exitcode: ${{ steps.gitleaks.outputs.exitcode }}"
@@ -33,3 +34,4 @@ jobs:
       uses: github/codeql-action/upload-sarif@v2
       with:
         sarif_file: ${{ steps.gitleaks.outputs.report }}
+        
