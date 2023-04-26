@@ -15,7 +15,7 @@ jobs:
         fetch-depth: 0
 
     - name: Run Gitleaks
-      id: gitleaks
+      #id: gitleaks
       uses: DariuszPorowski/github-action-gitleaks@v2
 
 
