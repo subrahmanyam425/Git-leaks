@@ -11,8 +11,10 @@ jobs:
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
-    - name: Install gitleaks
-      id: gitleaks
+    - name: using snyc
+      id: snyc
       uses: snyk/actions@0.3.0
+    - name: Authenticate with Snyk
+      run: snyk auth ${{ secrets.SNYK_API_TOKEN }}
     - name: Scan for secrets
       run: snyk test
